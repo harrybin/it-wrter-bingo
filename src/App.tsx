@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Toaster } from '@/components/ui/sonner'
 import { Plus, Crown, ArrowCounterClockwise, Shuffle, Trash, ArrowsOut, GridNine, ListBullets } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
@@ -216,6 +217,7 @@ function App() {
 
   return (
     <div className={`min-h-screen p-4 md:p-8 ${isFullscreen ? 'fixed inset-0 z-50 bg-background' : ''}`}>
+      <Toaster />
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-4">
