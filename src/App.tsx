@@ -178,8 +178,8 @@ function App() {
     const selectedTerm = availableTerms[randomIndex]
 
     setRandomlySelectedTerms(currentTerms => [
-      ...(currentTerms || []),
-      selectedTerm.term
+      selectedTerm.term,
+      ...(currentTerms || [])
     ])
 
     toast.success(`Begriff ausgewählt: ${selectedTerm.term}`)
