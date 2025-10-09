@@ -217,7 +217,7 @@ function App() {
         {/* Header */}
         <div className="text-center space-y-3 md:space-y-4">
           <div className="space-y-2">
-            <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-fuchsia-500">Tech Bingo</h1>
+            <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-fuchsia-500">IT-Wörter Bingo</h1>
           </div>
           
           {/* Stats - Mobile optimized layout */}
