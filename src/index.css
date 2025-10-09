@@ -84,6 +84,30 @@
   word-break: break-word;
   hyphens: auto;
   overflow-wrap: break-word;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 640px) {
+  .bingo-field {
+    font-size: 0.65rem;
+    line-height: 1.1;
+    padding: 0.25rem !important;
+  }
+  
+  .bingo-field span {
+    font-size: inherit;
+    display: block;
+    width: 100%;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .bingo-field {
+    font-size: 0.75rem;
+    line-height: 1.15;
+  }
 }
 
 .bingo-field:hover {
@@ -91,6 +115,14 @@
   background: oklch(0.95 0 0 / 0.15);
   transform: translateY(-1px);
   box-shadow: 0 8px 25px oklch(0.1 0 0 / 0.15);
+}
+
+/* Reduce hover effects on mobile for better performance */
+@media (max-width: 640px) {
+  .bingo-field:hover {
+    transform: none;
+    box-shadow: 0 4px 12px oklch(0.1 0 0 / 0.1);
+  }
 }
 
 .bingo-field.selected {

@@ -216,57 +216,62 @@ function App() {
   }
 
   return (
-    <div className={`min-h-screen p-4 md:p-8 ${isFullscreen ? 'fixed inset-0 z-50 bg-background' : ''}`}>
+    <div className={`min-h-screen p-2 md:p-4 lg:p-8 ${isFullscreen ? 'fixed inset-0 z-50 bg-background p-1 md:p-4' : ''}`}>
       <Toaster />
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-4xl mx-auto space-y-4 md:space-y-6">
         {/* Header */}
-        <div className="text-center space-y-4">
-          <div className="flex items-center justify-center gap-4 flex-wrap">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
-              Tech Bingo
-            </h1>
-            <Button
-              onClick={toggleFullscreen}
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-2"
-            >
-              <ArrowsOut size={16} />
-              {isFullscreen ? 'Normal' : 'Vollbild'}
-            </Button>
-            <p className="text-muted-foreground text-lg">
+        <div className="text-center space-y-3 md:space-y-4">
+          <div className="space-y-2">
+            <div className="flex items-center justify-center gap-2 flex-wrap">
+              <h1 className="text-2xl md:text-4xl font-bold text-foreground tracking-tight">
+                Tech Bingo
+              </h1>
+              <Button
+                onClick={toggleFullscreen}
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1 md:gap-2"
+              >
+                <ArrowsOut size={14} />
+                <span className="hidden sm:inline">{isFullscreen ? 'Normal' : 'Vollbild'}</span>
+              </Button>
+            </div>
+            <p className="text-muted-foreground text-sm md:text-lg">
               IT-Begriffe spielerisch lernen
             </p>
           </div>
           
-          {/* Stats and Controls */}
-          <div className="flex justify-center gap-3 flex-wrap items-center">
-            <Badge variant="secondary" className="text-sm px-3 py-1">
-              Ausgewählt: {selectedCount}/25
+          {/* Stats - Mobile optimized layout */}
+          <div className="flex justify-center gap-2 flex-wrap">
+            <Badge variant="secondary" className="text-xs md:text-sm px-2 md:px-3 py-1">
+              {selectedCount}/25
             </Badge>
-            <Badge variant="outline" className="text-sm px-3 py-1">
+            <Badge variant="outline" className="text-xs md:text-sm px-2 md:px-3 py-1">
               Spiele: {gameStats?.gamesPlayed || 0}
             </Badge>
-            <Badge variant="outline" className="text-sm px-3 py-1">
+            <Badge variant="outline" className="text-xs md:text-sm px-2 md:px-3 py-1">
               Bingos: {gameStats?.bingosAchieved || 0}
             </Badge>
-            
+          </div>
+
+          {/* Controls - Stacked on mobile */}
+          <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3">
             <Button 
               onClick={startNewGame}
-              className="flex items-center gap-2 px-6"
-              size="lg"
+              className="flex items-center gap-2 px-4 sm:px-6"
+              size="default"
             >
-              <Plus size={18} />
+              <Plus size={16} />
               Neues Spiel
             </Button>
             
             <Button 
               onClick={resetGame}
               variant="outline"
-              className="flex items-center gap-2 px-6"
-              size="lg"
+              className="flex items-center gap-2 px-4 sm:px-6"
+              size="default"
             >
-              <ArrowCounterClockwise size={18} />
+              <ArrowCounterClockwise size={16} />
               Zurücksetzen
             </Button>
           </div>
@@ -274,35 +279,37 @@ function App() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="bingo" className="flex items-center gap-2">
-              <GridNine size={16} />
-              Bingo-Feld
+          <TabsList className="grid w-full grid-cols-2 mb-4 md:mb-6">
+            <TabsTrigger value="bingo" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
+              <GridNine size={14} className="md:size-4" />
+              <span className="hidden sm:inline">Bingo-Feld</span>
+              <span className="sm:hidden">Bingo</span>
             </TabsTrigger>
-            <TabsTrigger value="list" className="flex items-center gap-2">
-              <ListBullets size={16} />
-              Begriff-Liste
+            <TabsTrigger value="list" className="flex items-center gap-1 md:gap-2 text-xs md:text-sm">
+              <ListBullets size={14} className="md:size-4" />
+              <span className="hidden sm:inline">Begriff-Liste</span>
+              <span className="sm:hidden">Liste</span>
             </TabsTrigger>
           </TabsList>
 
           {/* Bingo Grid Tab */}
-          <TabsContent value="bingo" className="space-y-6">
-            <Card className="glass-card p-4 md:p-6">
-              <div className={`grid grid-cols-5 gap-2 md:gap-3 ${isFullscreen ? 'gap-4' : ''}`}>
+          <TabsContent value="bingo" className="space-y-4 md:space-y-6">
+            <Card className="glass-card p-2 md:p-4 lg:p-6">
+              <div className={`grid grid-cols-5 gap-1 md:gap-2 lg:gap-3 ${isFullscreen ? 'gap-3 md:gap-4' : ''}`}>
                 {bingoFields.map((field) => (
                   <button
                     key={field.id}
                     onClick={() => toggleField(field.id)}
                     className={`
-                      bingo-field glass-card p-2 md:p-3 rounded-lg text-xs md:text-sm font-medium
-                      ${isFullscreen ? 'min-h-24 md:min-h-28 text-base md:text-lg p-4' : 'min-h-16 md:min-h-20'}
+                      bingo-field glass-card rounded-md md:rounded-lg text-xs md:text-sm font-medium
+                      ${isFullscreen ? 'min-h-20 sm:min-h-24 md:min-h-28 text-sm md:text-base lg:text-lg p-2 md:p-4' : 'min-h-12 sm:min-h-16 md:min-h-20 p-1 md:p-2 lg:p-3'}
                       flex items-center justify-center text-center
                       border-2 transition-all duration-200
                       ${field.selected ? 'selected' : ''}
                       ${isFieldInWinningLine(field.id) ? 'winning' : ''}
                     `}
                   >
-                    <span className="leading-tight break-words hyphens-auto text-center block">
+                    <span className="leading-tight break-words hyphens-auto text-center block max-w-full">
                       {field.term}
                     </span>
                   </button>
@@ -312,12 +319,12 @@ function App() {
 
             {/* Winning Status for Bingo Tab */}
             {winningLines.length > 0 && (
-              <Card className="glass-card p-4 text-center">
+              <Card className="glass-card p-3 md:p-4 text-center">
                 <div className="flex items-center justify-center gap-2 text-secondary mb-2">
-                  <Crown size={24} />
-                  <span className="text-xl font-bold">BINGO!</span>
+                  <Crown size={20} className="md:size-6" />
+                  <span className="text-lg md:text-xl font-bold">BINGO!</span>
                 </div>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground text-sm md:text-base">
                   {winningLines.length === 1 
                     ? 'Eine Linie geschafft!' 
                     : `${winningLines.length} Linien geschafft!`
@@ -328,26 +335,26 @@ function App() {
           </TabsContent>
 
           {/* Random Term List Tab */}
-          <TabsContent value="list" className="space-y-6">
-            <Card className="glass-card p-4 md:p-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-foreground">
+          <TabsContent value="list" className="space-y-4 md:space-y-6">
+            <Card className="glass-card p-3 md:p-4 lg:p-6">
+              <div className="space-y-3 md:space-y-4">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <h3 className="text-base md:text-lg font-semibold text-foreground">
                     Zufallsauswahl
                   </h3>
-                  <Badge variant="outline" className="text-sm">
+                  <Badge variant="outline" className="text-xs md:text-sm">
                     Verfügbar: {remainingRandomTerms}/25
                   </Badge>
                 </div>
                 
-                <div className="flex gap-3 justify-center flex-wrap">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
                   <Button 
                     onClick={selectRandomTerm}
                     disabled={remainingRandomTerms === 0}
-                    className="flex items-center gap-2 px-6"
-                    size="lg"
+                    className="flex items-center gap-2 px-4 sm:px-6"
+                    size="default"
                   >
-                    <Shuffle size={18} />
+                    <Shuffle size={16} />
                     Begriff wählen
                   </Button>
                   
@@ -355,10 +362,10 @@ function App() {
                     <Button 
                       onClick={clearRandomSelections}
                       variant="destructive"
-                      className="flex items-center gap-2 px-6"
-                      size="lg"
+                      className="flex items-center gap-2 px-4 sm:px-6"
+                      size="default"
                     >
-                      <Trash size={18} />
+                      <Trash size={16} />
                       Liste löschen
                     </Button>
                   )}
@@ -366,14 +373,14 @@ function App() {
 
                 {randomlySelectedTerms && randomlySelectedTerms.length > 0 ? (
                   <div className="space-y-3">
-                    <h4 className="font-medium text-muted-foreground text-center">
+                    <h4 className="font-medium text-muted-foreground text-center text-sm md:text-base">
                       Ausgewählte Begriffe ({randomlySelectedTerms.length})
                     </h4>
-                    <div className={`grid gap-3 ${isFullscreen ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'} max-h-96 overflow-y-auto`}>
+                    <div className={`grid gap-2 md:gap-3 ${isFullscreen ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'} max-h-64 sm:max-h-96 overflow-y-auto`}>
                       {randomlySelectedTerms.map((term, index) => (
                         <div 
                           key={index}
-                          className={`glass-card rounded-lg text-center border border-border/50 bg-accent/20 ${isFullscreen ? 'p-6 text-lg' : 'p-3 text-sm'}`}
+                          className={`glass-card rounded-md md:rounded-lg text-center border border-border/50 bg-accent/20 ${isFullscreen ? 'p-4 md:p-6 text-base md:text-lg' : 'p-2 md:p-3 text-xs md:text-sm'}`}
                         >
                           <span className="break-words hyphens-auto text-foreground font-medium">
                             {term}
@@ -383,11 +390,11 @@ function App() {
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center py-8">
-                    <p className="text-muted-foreground text-lg">
+                  <div className="text-center py-6 md:py-8">
+                    <p className="text-muted-foreground text-base md:text-lg">
                       Noch keine Begriffe ausgewählt
                     </p>
-                    <p className="text-muted-foreground text-sm mt-2">
+                    <p className="text-muted-foreground text-xs md:text-sm mt-2">
                       Klicke auf "Begriff wählen" um zu starten
                     </p>
                   </div>
