@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Toaster } from '@/components/ui/sonner'
-import { Plus, Crown, ArrowCounterClockwise, Shuffle, Trash, ArrowsOut, GridNine, ListBullets } from '@phosphor-icons/react'
+import { Plus, Crown, ArrowCounterClockwise, Shuffle, Trash, GridNine, ListBullets } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
 const TECH_TERMS = [
@@ -110,7 +110,6 @@ function App() {
   const [winningLines, setWinningLines] = useState<WinningLine[]>([])
   const [gameStats, setGameStats] = useKV<GameStats>('game-stats', { gamesPlayed: 0, bingosAchieved: 0 })
   const [randomlySelectedTerms, setRandomlySelectedTerms] = useKV<string[]>('randomly-selected-terms', [])
-  const [isFullscreen, setIsFullscreen] = useState(false)
   const [activeTab, setActiveTab] = useState('bingo')
 
   useEffect(() => {
@@ -191,10 +190,6 @@ function App() {
     toast.success('Zufallsauswahl zurückgesetzt!')
   }, [setRandomlySelectedTerms])
 
-  const toggleFullscreen = useCallback(() => {
-    setIsFullscreen(prev => !prev)
-  }, [])
-
   const isFieldInWinningLine = (fieldId: number): boolean => {
     return winningLines.some(line => line.positions.includes(fieldId))
   }
@@ -216,25 +211,13 @@ function App() {
   }
 
   return (
-    <div className={`min-h-screen p-2 md:p-4 lg:p-8 ${isFullscreen ? 'fixed inset-0 z-50 bg-background p-1 md:p-4' : ''}`}>
+    <div className="min-h-screen p-2 md:p-4 lg:p-8">
       <Toaster />
       <div className="max-w-4xl mx-auto space-y-4 md:space-y-6">
         {/* Header */}
         <div className="text-center space-y-3 md:space-y-4">
           <div className="space-y-2">
-            <div className="flex items-center justify-center gap-2 flex-wrap">
-              <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-fuchsia-500">Tech Bingo</h1>
-              <Button
-                onClick={toggleFullscreen}
-                variant="outline"
-                size="sm"
-                className="flex items-center gap-1 md:gap-2"
-              >
-                <ArrowsOut size={14} />
-                <span className="hidden sm:inline">{isFullscreen ? 'Normal' : 'Vollbild'}</span>
-              </Button>
-            </div>
-
+            <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-fuchsia-500">Tech Bingo</h1>
           </div>
           
           {/* Stats - Mobile optimized layout */}
@@ -291,14 +274,14 @@ function App() {
           {/* Bingo Grid Tab */}
           <TabsContent value="bingo" className="space-y-4 md:space-y-6">
             <Card className="glass-card p-2 md:p-4 lg:p-6">
-              <div className={`grid grid-cols-5 gap-1 md:gap-2 lg:gap-3 ${isFullscreen ? 'gap-3 md:gap-4' : ''}`}>
+              <div className="grid grid-cols-5 gap-1 md:gap-2 lg:gap-3">
                 {bingoFields.map((field) => (
                   <button
                     key={field.id}
                     onClick={() => toggleField(field.id)}
                     className={`
                       bingo-field glass-card rounded-md md:rounded-lg text-xs md:text-sm font-medium
-                      ${isFullscreen ? 'min-h-20 sm:min-h-24 md:min-h-28 text-sm md:text-base lg:text-lg p-2 md:p-4' : 'min-h-12 sm:min-h-16 md:min-h-20 p-1 md:p-2 lg:p-3'}
+                      min-h-12 sm:min-h-16 md:min-h-20 p-1 md:p-2 lg:p-3
                       flex items-center justify-center text-center
                       border-2 transition-all duration-200
                       ${field.selected ? 'selected' : ''}
@@ -372,11 +355,11 @@ function App() {
                     <h4 className="font-medium text-muted-foreground text-center text-sm md:text-base">
                       Ausgewählte Begriffe ({randomlySelectedTerms.length})
                     </h4>
-                    <div className={`grid gap-2 md:gap-3 ${isFullscreen ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'} max-h-64 sm:max-h-96 overflow-y-auto`}>
+                    <div className="grid gap-2 md:gap-3 grid-cols-1 sm:grid-cols-2 max-h-64 sm:max-h-96 overflow-y-auto">
                       {randomlySelectedTerms.map((term, index) => (
                         <div 
                           key={index}
-                          className={`glass-card rounded-md md:rounded-lg text-center border border-border/50 bg-accent/20 ${isFullscreen ? 'p-4 md:p-6 text-base md:text-lg' : 'p-2 md:p-3 text-xs md:text-sm'}`}
+                          className="glass-card rounded-md md:rounded-lg text-center border border-border/50 bg-accent/20 p-2 md:p-3 text-xs md:text-sm"
                         >
                           <span className="break-words hyphens-auto text-foreground font-medium">
                             {term}
