@@ -3,7 +3,8 @@ import { useKV } from '@github/spark/hooks'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Crown, ArrowCounterClockwise, Shuffle, Trash } from '@phosphor-icons/react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Plus, Crown, ArrowCounterClockwise, Shuffle, Trash, ArrowsOut, GridNine, ListBullets } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
 const TECH_TERMS = [
@@ -108,6 +109,8 @@ function App() {
   const [winningLines, setWinningLines] = useState<WinningLine[]>([])
   const [gameStats, setGameStats] = useKV<GameStats>('game-stats', { gamesPlayed: 0, bingosAchieved: 0 })
   const [randomlySelectedTerms, setRandomlySelectedTerms] = useKV<string[]>('randomly-selected-terms', [])
+  const [isFullscreen, setIsFullscreen] = useState(false)
+  const [activeTab, setActiveTab] = useState('bingo')
 
   useEffect(() => {
     if (!bingoFields || bingoFields.length === 0) {
@@ -187,6 +190,10 @@ function App() {
     toast.success('Zufallsauswahl zurückgesetzt!')
   }, [setRandomlySelectedTerms])
 
+  const toggleFullscreen = useCallback(() => {
+    setIsFullscreen(prev => !prev)
+  }, [])
+
   const isFieldInWinningLine = (fieldId: number): boolean => {
     return winningLines.some(line => line.positions.includes(fieldId))
   }
@@ -208,13 +215,24 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen p-4 md:p-8">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className={`min-h-screen p-4 md:p-8 ${isFullscreen ? 'fixed inset-0 z-50 bg-background' : ''}`}>
+      <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
-            Tech Bingo
-          </h1>
+          <div className="flex items-center justify-center gap-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
+              Tech Bingo
+            </h1>
+            <Button
+              onClick={toggleFullscreen}
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              <ArrowsOut size={16} />
+              {isFullscreen ? 'Normal' : 'Vollbild'}
+            </Button>
+          </div>
           <p className="text-muted-foreground text-lg">
             IT-Begriffe spielerisch lernen
           </p>
@@ -233,30 +251,7 @@ function App() {
           </div>
         </div>
 
-        {/* Bingo Grid */}
-        <Card className="glass-card p-4 md:p-6">
-          <div className="grid grid-cols-5 gap-2 md:gap-3">
-            {bingoFields.map((field) => (
-              <button
-                key={field.id}
-                onClick={() => toggleField(field.id)}
-                className={`
-                  bingo-field glass-card p-2 md:p-3 rounded-lg text-xs md:text-sm font-medium
-                  min-h-16 md:min-h-20 flex items-center justify-center text-center
-                  border-2 transition-all duration-200
-                  ${field.selected ? 'selected' : ''}
-                  ${isFieldInWinningLine(field.id) ? 'winning' : ''}
-                `}
-              >
-                <span className="leading-tight break-words hyphens-auto text-center block">
-                  {field.term}
-                </span>
-              </button>
-            ))}
-          </div>
-        </Card>
-
-        {/* Controls */}
+        {/* Main Controls */}
         <div className="flex justify-center gap-3 flex-wrap">
           <Button 
             onClick={startNewGame}
@@ -278,79 +273,130 @@ function App() {
           </Button>
         </div>
 
-        {/* Random Term Picker */}
-        <Card className="glass-card p-4 md:p-6">
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-foreground">
-                Zufallsauswahl
-              </h3>
-              <Badge variant="outline" className="text-sm">
-                Verfügbar: {remainingRandomTerms}/25
-              </Badge>
-            </div>
-            
-            <div className="flex gap-3 justify-center flex-wrap">
-              <Button 
-                onClick={selectRandomTerm}
-                disabled={remainingRandomTerms === 0}
-                className="flex items-center gap-2 px-6"
-                size="lg"
-              >
-                <Shuffle size={18} />
-                Begriff wählen
-              </Button>
-              
-              {randomlySelectedTerms && randomlySelectedTerms.length > 0 && (
-                <Button 
-                  onClick={clearRandomSelections}
-                  variant="outline"
-                  className="flex items-center gap-2 px-6"
-                  size="lg"
-                >
-                  <Trash size={18} />
-                  Liste löschen
-                </Button>
-              )}
-            </div>
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="bingo" className="flex items-center gap-2">
+              <GridNine size={16} />
+              Bingo-Feld
+            </TabsTrigger>
+            <TabsTrigger value="list" className="flex items-center gap-2">
+              <ListBullets size={16} />
+              Begriff-Liste
+            </TabsTrigger>
+          </TabsList>
 
-            {randomlySelectedTerms && randomlySelectedTerms.length > 0 && (
-              <div className="space-y-3">
-                <h4 className="font-medium text-muted-foreground text-center">
-                  Ausgewählte Begriffe ({randomlySelectedTerms.length})
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto">
-                  {randomlySelectedTerms.map((term, index) => (
-                    <div 
-                      key={index}
-                      className="glass-card p-3 rounded-lg text-sm text-center border border-border/50 bg-accent/20"
-                    >
-                      <span className="break-words hyphens-auto text-foreground font-medium">
-                        {term}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+          {/* Bingo Grid Tab */}
+          <TabsContent value="bingo" className="space-y-6">
+            <Card className="glass-card p-4 md:p-6">
+              <div className={`grid grid-cols-5 gap-2 md:gap-3 ${isFullscreen ? 'gap-4' : ''}`}>
+                {bingoFields.map((field) => (
+                  <button
+                    key={field.id}
+                    onClick={() => toggleField(field.id)}
+                    className={`
+                      bingo-field glass-card p-2 md:p-3 rounded-lg text-xs md:text-sm font-medium
+                      ${isFullscreen ? 'min-h-24 md:min-h-28 text-base md:text-lg p-4' : 'min-h-16 md:min-h-20'}
+                      flex items-center justify-center text-center
+                      border-2 transition-all duration-200
+                      ${field.selected ? 'selected' : ''}
+                      ${isFieldInWinningLine(field.id) ? 'winning' : ''}
+                    `}
+                  >
+                    <span className="leading-tight break-words hyphens-auto text-center block">
+                      {field.term}
+                    </span>
+                  </button>
+                ))}
               </div>
-            )}
-          </div>
-        </Card>
+            </Card>
 
-        {/* Winning Status */}
-        {winningLines.length > 0 && (
-          <Card className="glass-card p-4 text-center">
-            <div className="flex items-center justify-center gap-2 text-secondary mb-2">
-              <Crown size={24} />
-              <span className="text-xl font-bold">BINGO!</span>
-            </div>
-            <p className="text-muted-foreground">
-              {winningLines.length === 1 
-                ? 'Eine Linie geschafft!' 
-                : `${winningLines.length} Linien geschafft!`
-              }
-            </p>
-          </Card>
-        )}
+            {/* Winning Status for Bingo Tab */}
+            {winningLines.length > 0 && (
+              <Card className="glass-card p-4 text-center">
+                <div className="flex items-center justify-center gap-2 text-secondary mb-2">
+                  <Crown size={24} />
+                  <span className="text-xl font-bold">BINGO!</span>
+                </div>
+                <p className="text-muted-foreground">
+                  {winningLines.length === 1 
+                    ? 'Eine Linie geschafft!' 
+                    : `${winningLines.length} Linien geschafft!`
+                  }
+                </p>
+              </Card>
+            )}
+          </TabsContent>
+
+          {/* Random Term List Tab */}
+          <TabsContent value="list" className="space-y-6">
+            <Card className="glass-card p-4 md:p-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-foreground">
+                    Zufallsauswahl
+                  </h3>
+                  <Badge variant="outline" className="text-sm">
+                    Verfügbar: {remainingRandomTerms}/25
+                  </Badge>
+                </div>
+                
+                <div className="flex gap-3 justify-center flex-wrap">
+                  <Button 
+                    onClick={selectRandomTerm}
+                    disabled={remainingRandomTerms === 0}
+                    className="flex items-center gap-2 px-6"
+                    size="lg"
+                  >
+                    <Shuffle size={18} />
+                    Begriff wählen
+                  </Button>
+                  
+                  {randomlySelectedTerms && randomlySelectedTerms.length > 0 && (
+                    <Button 
+                      onClick={clearRandomSelections}
+                      variant="outline"
+                      className="flex items-center gap-2 px-6"
+                      size="lg"
+                    >
+                      <Trash size={18} />
+                      Liste löschen
+                    </Button>
+                  )}
+                </div>
+
+                {randomlySelectedTerms && randomlySelectedTerms.length > 0 ? (
+                  <div className="space-y-3">
+                    <h4 className="font-medium text-muted-foreground text-center">
+                      Ausgewählte Begriffe ({randomlySelectedTerms.length})
+                    </h4>
+                    <div className={`grid gap-3 ${isFullscreen ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'} max-h-96 overflow-y-auto`}>
+                      {randomlySelectedTerms.map((term, index) => (
+                        <div 
+                          key={index}
+                          className={`glass-card rounded-lg text-center border border-border/50 bg-accent/20 ${isFullscreen ? 'p-6 text-lg' : 'p-3 text-sm'}`}
+                        >
+                          <span className="break-words hyphens-auto text-foreground font-medium">
+                            {term}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-muted-foreground text-lg">
+                      Noch keine Begriffe ausgewählt
+                    </p>
+                    <p className="text-muted-foreground text-sm mt-2">
+                      Klicke auf "Begriff wählen" um zu starten
+                    </p>
+                  </div>
+                )}
+              </div>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   )
