@@ -357,7 +357,7 @@ function App() {
                   {randomlySelectedTerms && randomlySelectedTerms.length > 0 && (
                     <Button 
                       onClick={clearRandomSelections}
-                      variant="outline"
+                      variant="destructive"
                       className="flex items-center gap-2 px-6"
                       size="lg"
                     >
