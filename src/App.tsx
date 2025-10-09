@@ -282,14 +282,18 @@ function App() {
                     className={`
                       bingo-field glass-card rounded-md md:rounded-lg text-xs md:text-sm font-medium
                       min-h-12 sm:min-h-16 md:min-h-20 p-1 md:p-2 lg:p-3
-                      flex items-center justify-center text-center
+                      flex flex-col items-center justify-center text-center
                       border-[3px] transition-all duration-200
                       ${field.selected ? 'selected' : ''}
                       ${isFieldInWinningLine(field.id) ? 'winning' : ''}
                     `}
                   >
-                    <span className="leading-tight break-words hyphens-auto text-center block max-w-full">
-                      {field.term}
+                    <span className="text-center block max-w-full">
+                      {field.term.split(' ').map((part, index) => (
+                        <span key={index} className={index === 0 ? "block text-base md:text-lg mb-1" : "block leading-tight break-words hyphens-auto"}>
+                          {part}
+                        </span>
+                      ))}
                     </span>
                   </button>
                 ))}
@@ -359,10 +363,14 @@ function App() {
                       {randomlySelectedTerms.map((term, index) => (
                         <div 
                           key={index}
-                          className="glass-card rounded-md md:rounded-lg text-center border-2 border-border bg-card/80 p-2 md:p-3 text-xs md:text-sm"
+                          className="glass-card rounded-md md:rounded-lg text-center border-2 border-border bg-card/80 p-2 md:p-3 text-xs md:text-sm flex flex-col items-center justify-center"
                         >
-                          <span className="break-words hyphens-auto text-foreground font-medium">
-                            {term}
+                          <span className="text-foreground font-medium">
+                            {term.split(' ').map((part, partIndex) => (
+                              <span key={partIndex} className={partIndex === 0 ? "block text-base md:text-lg mb-1" : "block break-words hyphens-auto"}>
+                                {part}
+                              </span>
+                            ))}
                           </span>
                         </div>
                       ))}
