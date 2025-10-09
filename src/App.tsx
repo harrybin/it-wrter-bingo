@@ -323,9 +323,9 @@ function App() {
                   {randomlySelectedTerms.map((term, index) => (
                     <div 
                       key={index}
-                      className="glass-card p-3 rounded-lg text-sm text-center border border-border/50"
+                      className="glass-card p-3 rounded-lg text-sm text-center border border-border/50 bg-accent/20"
                     >
-                      <span className="break-words hyphens-auto">
+                      <span className="break-words hyphens-auto text-foreground font-medium">
                         {term}
                       </span>
                     </div>
