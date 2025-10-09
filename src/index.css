@@ -33,11 +33,11 @@
   
   --radius: 0.25rem;
   
-  --font-sans: "Outfit";
+  --font-sans: Outfit;
   
-  --font-serif: "Cormorant";
+  --font-serif: Cormorant;
   
-  --font-mono: "Fira Code";
+  --font-mono: Fira Code;
   
   --chart-1: oklch(0.60 0.25 320);
   

@@ -223,9 +223,7 @@ function App() {
         <div className="text-center space-y-3 md:space-y-4">
           <div className="space-y-2">
             <div className="flex items-center justify-center gap-2 flex-wrap">
-              <h1 className="text-2xl md:text-4xl font-bold text-foreground tracking-tight">
-                Tech Bingo
-              </h1>
+              <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-fuchsia-500">Tech Bingo</h1>
               <Button
                 onClick={toggleFullscreen}
                 variant="outline"
@@ -236,9 +234,7 @@ function App() {
                 <span className="hidden sm:inline">{isFullscreen ? 'Normal' : 'Vollbild'}</span>
               </Button>
             </div>
-            <p className="text-muted-foreground text-sm md:text-lg">
-              IT-Begriffe spielerisch lernen
-            </p>
+
           </div>
           
           {/* Stats - Mobile optimized layout */}
@@ -405,7 +401,7 @@ function App() {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }
 
 export default App
