@@ -27,8 +27,8 @@
   
   --muted: oklch(0.18 0.02 250);
   --muted-foreground: oklch(0.65 0.02 270);
-  --border: oklch(0.22 0.03 250);
-  --input: oklch(0.22 0.03 250);
+  --border: oklch(0.35 0.05 250);
+  --input: oklch(0.35 0.05 250);
   --ring: oklch(0.65 0.25 320);
   
   --radius: 0.375rem;
@@ -121,7 +121,7 @@
 .glass-card {
   backdrop-filter: blur(16px);
   background: oklch(0.12 0.02 250 / 0.9);
-  border: 1px solid oklch(0.22 0.03 250 / 0.5);
+  border: 2px solid oklch(0.35 0.05 250 / 0.8);
   box-shadow: 0 8px 32px oklch(0.05 0.02 250 / 0.3);
 }
 

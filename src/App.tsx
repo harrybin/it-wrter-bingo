@@ -225,10 +225,10 @@ function App() {
             <Badge variant="secondary" className="text-xs md:text-sm px-2 md:px-3 py-1">
               {selectedCount}/25
             </Badge>
-            <Badge variant="outline" className="text-xs md:text-sm px-2 md:px-3 py-1 text-muted-foreground border-border/50">
+            <Badge variant="outline" className="text-xs md:text-sm px-2 md:px-3 py-1 text-muted-foreground border-2 border-border">
               Spiele: {gameStats?.gamesPlayed || 0}
             </Badge>
-            <Badge variant="outline" className="text-xs md:text-sm px-2 md:px-3 py-1 text-muted-foreground border-border/50">
+            <Badge variant="outline" className="text-xs md:text-sm px-2 md:px-3 py-1 text-muted-foreground border-2 border-border">
               Bingos: {gameStats?.bingosAchieved || 0}
             </Badge>
           </div>
@@ -283,7 +283,7 @@ function App() {
                       bingo-field glass-card rounded-md md:rounded-lg text-xs md:text-sm font-medium
                       min-h-12 sm:min-h-16 md:min-h-20 p-1 md:p-2 lg:p-3
                       flex items-center justify-center text-center
-                      border-2 transition-all duration-200
+                      border-[3px] transition-all duration-200
                       ${field.selected ? 'selected' : ''}
                       ${isFieldInWinningLine(field.id) ? 'winning' : ''}
                     `}
@@ -359,7 +359,7 @@ function App() {
                       {randomlySelectedTerms.map((term, index) => (
                         <div 
                           key={index}
-                          className="glass-card rounded-md md:rounded-lg text-center border border-border/50 bg-card/80 p-2 md:p-3 text-xs md:text-sm"
+                          className="glass-card rounded-md md:rounded-lg text-center border-2 border-border bg-card/80 p-2 md:p-3 text-xs md:text-sm"
                         >
                           <span className="break-words hyphens-auto text-foreground font-medium">
                             {term}
