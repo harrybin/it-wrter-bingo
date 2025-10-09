@@ -225,10 +225,10 @@ function App() {
             <Badge variant="secondary" className="text-xs md:text-sm px-2 md:px-3 py-1">
               {selectedCount}/25
             </Badge>
-            <Badge variant="outline" className="text-xs md:text-sm px-2 md:px-3 py-1">
+            <Badge variant="outline" className="text-xs md:text-sm px-2 md:px-3 py-1 text-muted-foreground border-border/50">
               Spiele: {gameStats?.gamesPlayed || 0}
             </Badge>
-            <Badge variant="outline" className="text-xs md:text-sm px-2 md:px-3 py-1">
+            <Badge variant="outline" className="text-xs md:text-sm px-2 md:px-3 py-1 text-muted-foreground border-border/50">
               Bingos: {gameStats?.bingosAchieved || 0}
             </Badge>
           </div>
@@ -359,7 +359,7 @@ function App() {
                       {randomlySelectedTerms.map((term, index) => (
                         <div 
                           key={index}
-                          className="glass-card rounded-md md:rounded-lg text-center border border-border/50 bg-accent/20 p-2 md:p-3 text-xs md:text-sm"
+                          className="glass-card rounded-md md:rounded-lg text-center border border-border/50 bg-card/80 p-2 md:p-3 text-xs md:text-sm"
                         >
                           <span className="break-words hyphens-auto text-foreground font-medium">
                             {term}
