@@ -10,7 +10,7 @@ const projectRoot = process.env.PROJECT_ROOT || import.meta.dirname
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/it-wrter-bingo/',
+  base: process.env.NODE_ENV === 'production' ? '/' : '/it-wrter-bingo/',
   plugins: [
     react(),
     tailwindcss(),
@@ -22,5 +22,5 @@ export default defineConfig({
     alias: {
       '@': resolve(projectRoot, 'src')
     }
-  },
+  }
 });
