@@ -216,7 +216,7 @@ function App() {
                   ${isFieldInWinningLine(field.id) ? 'winning' : ''}
                 `}
               >
-                <span className="leading-tight break-words hyphens-auto">
+                <span className="leading-tight break-words hyphens-auto text-center block">
                   {field.term}
                 </span>
               </button>
