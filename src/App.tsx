@@ -221,7 +221,7 @@ function App() {
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center space-y-4">
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-4 flex-wrap">
             <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
               Tech Bingo
             </h1>
@@ -234,13 +234,13 @@ function App() {
               <ArrowsOut size={16} />
               {isFullscreen ? 'Normal' : 'Vollbild'}
             </Button>
+            <p className="text-muted-foreground text-lg">
+              IT-Begriffe spielerisch lernen
+            </p>
           </div>
-          <p className="text-muted-foreground text-lg">
-            IT-Begriffe spielerisch lernen
-          </p>
           
-          {/* Stats */}
-          <div className="flex justify-center gap-4 flex-wrap">
+          {/* Stats and Controls */}
+          <div className="flex justify-center gap-3 flex-wrap items-center">
             <Badge variant="secondary" className="text-sm px-3 py-1">
               Ausgewählt: {selectedCount}/25
             </Badge>
@@ -250,29 +250,26 @@ function App() {
             <Badge variant="outline" className="text-sm px-3 py-1">
               Bingos: {gameStats?.bingosAchieved || 0}
             </Badge>
+            
+            <Button 
+              onClick={startNewGame}
+              className="flex items-center gap-2 px-6"
+              size="lg"
+            >
+              <Plus size={18} />
+              Neues Spiel
+            </Button>
+            
+            <Button 
+              onClick={resetGame}
+              variant="outline"
+              className="flex items-center gap-2 px-6"
+              size="lg"
+            >
+              <ArrowCounterClockwise size={18} />
+              Zurücksetzen
+            </Button>
           </div>
-        </div>
-
-        {/* Main Controls */}
-        <div className="flex justify-center gap-3 flex-wrap">
-          <Button 
-            onClick={startNewGame}
-            className="flex items-center gap-2 px-6"
-            size="lg"
-          >
-            <Plus size={18} />
-            Neues Spiel
-          </Button>
-          
-          <Button 
-            onClick={resetGame}
-            variant="outline"
-            className="flex items-center gap-2 px-6"
-            size="lg"
-          >
-            <ArrowCounterClockwise size={18} />
-            Zurücksetzen
-          </Button>
         </div>
 
         {/* Tabs */}
