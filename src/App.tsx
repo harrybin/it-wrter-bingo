@@ -3,7 +3,7 @@ import { useKV } from '@github/spark/hooks'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Crown, ArrowCounterClockwise } from '@phosphor-icons/react'
+import { Plus, Crown, ArrowCounterClockwise, Shuffle, Trash } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 
 const TECH_TERMS = [
@@ -107,6 +107,7 @@ function App() {
   const [bingoFields, setBingoFields] = useKV<BingoField[]>('bingo-fields', [])
   const [winningLines, setWinningLines] = useState<WinningLine[]>([])
   const [gameStats, setGameStats] = useKV<GameStats>('game-stats', { gamesPlayed: 0, bingosAchieved: 0 })
+  const [randomlySelectedTerms, setRandomlySelectedTerms] = useKV<string[]>('randomly-selected-terms', [])
 
   useEffect(() => {
     if (!bingoFields || bingoFields.length === 0) {
@@ -158,11 +159,42 @@ function App() {
     setWinningLines([])
   }, [setBingoFields])
 
+  const selectRandomTerm = useCallback(() => {
+    if (!bingoFields || bingoFields.length === 0) return
+
+    const availableTerms = bingoFields.filter(field => 
+      !randomlySelectedTerms?.includes(field.term)
+    )
+
+    if (availableTerms.length === 0) {
+      toast.info('Alle Begriffe wurden bereits ausgewählt!')
+      return
+    }
+
+    const randomIndex = Math.floor(Math.random() * availableTerms.length)
+    const selectedTerm = availableTerms[randomIndex]
+
+    setRandomlySelectedTerms(currentTerms => [
+      ...(currentTerms || []),
+      selectedTerm.term
+    ])
+
+    toast.success(`Begriff ausgewählt: ${selectedTerm.term}`)
+  }, [bingoFields, randomlySelectedTerms, setRandomlySelectedTerms])
+
+  const clearRandomSelections = useCallback(() => {
+    setRandomlySelectedTerms([])
+    toast.success('Zufallsauswahl zurückgesetzt!')
+  }, [setRandomlySelectedTerms])
+
   const isFieldInWinningLine = (fieldId: number): boolean => {
     return winningLines.some(line => line.positions.includes(fieldId))
   }
 
   const selectedCount = bingoFields?.filter(field => field.selected).length || 0
+  const remainingRandomTerms = bingoFields?.filter(field => 
+    !randomlySelectedTerms?.includes(field.term)
+  ).length || 0
 
   if (!bingoFields || bingoFields.length === 0) {
     return (
@@ -245,6 +277,64 @@ function App() {
             Zurücksetzen
           </Button>
         </div>
+
+        {/* Random Term Picker */}
+        <Card className="glass-card p-4 md:p-6">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-foreground">
+                Zufallsauswahl
+              </h3>
+              <Badge variant="outline" className="text-sm">
+                Verfügbar: {remainingRandomTerms}/25
+              </Badge>
+            </div>
+            
+            <div className="flex gap-3 justify-center flex-wrap">
+              <Button 
+                onClick={selectRandomTerm}
+                disabled={remainingRandomTerms === 0}
+                className="flex items-center gap-2 px-6"
+                size="lg"
+              >
+                <Shuffle size={18} />
+                Begriff wählen
+              </Button>
+              
+              {randomlySelectedTerms && randomlySelectedTerms.length > 0 && (
+                <Button 
+                  onClick={clearRandomSelections}
+                  variant="outline"
+                  className="flex items-center gap-2 px-6"
+                  size="lg"
+                >
+                  <Trash size={18} />
+                  Liste löschen
+                </Button>
+              )}
+            </div>
+
+            {randomlySelectedTerms && randomlySelectedTerms.length > 0 && (
+              <div className="space-y-3">
+                <h4 className="font-medium text-muted-foreground text-center">
+                  Ausgewählte Begriffe ({randomlySelectedTerms.length})
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+                  {randomlySelectedTerms.map((term, index) => (
+                    <div 
+                      key={index}
+                      className="glass-card p-3 rounded-lg text-sm text-center border border-border/50"
+                    >
+                      <span className="break-words hyphens-auto">
+                        {term}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </Card>
 
         {/* Winning Status */}
         {winningLines.length > 0 && (
