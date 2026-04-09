@@ -1,25 +1,45 @@
-# ✨ Welcome to Your Spark Template!
-You've just launched your brand-new Spark Template Codespace — everything’s fired up and ready for you to explore, build, and create with Spark!
+# IT-Wörter Bingo
 
-This template is your blank canvas. It comes with a minimal setup to help you get started quickly with Spark development.
+Interaktive Bingo-Web-App zum Lernen von IT-Begriffen.
 
-🚀 What's Inside?
-- A clean, minimal Spark environment
-- Pre-configured for local development
-- Ready to scale with your ideas
-  
-🧠 What Can You Do?
+## Features
 
-Right now, this is just a starting point — the perfect place to begin building and testing your Spark applications.
+- 5x5 Bingo-Feld mit zufälligen IT-Begriffen
+- Klickbare Felder mit automatischer Bingo-Erkennung (Reihen, Spalten, Diagonalen)
+- Spielstatistik (gespielte Runden, erreichte Bingos)
+- Zusätzlicher Reiter für Zufalls-Begriffsauswahl
+- Responsives UI für Desktop und Mobile
 
-🧹 Just Exploring?
-No problem! If you were just checking things out and don’t need to keep this code:
+## Tech Stack
 
-- Simply delete your Spark.
-- Everything will be cleaned up — no traces left behind.
+- React 19 + TypeScript
+- Vite
+- Tailwind CSS + shadcn/ui Komponenten
+- Playwright für End-to-End-Tests
 
-📄 License For Spark Template Resources 
+## Entwicklung
 
-The Spark Template files and resources from GitHub are licensed under the terms of the MIT license, Copyright GitHub, Inc.
+```bash
+npm install
+npm run dev
+```
 
-[The Spark Editing link](https://github.com/spark/harrybin/it-wrter-bingo/file/src/App.tsx)
+App lokal öffnen: <http://localhost:5173>
+
+Alternativ mit PowerShell-Skript:
+
+```powershell
+.\run.ps1
+```
+
+## Verfügbare Skripte
+
+- `npm run dev` – Entwicklungsserver starten
+- `npm run build` – Produktions-Build erstellen
+- `npm run preview` – Build lokal ansehen
+- `npm run lint` – ESLint ausführen
+- `npm run test:e2e` – Playwright-Tests ausführen
+
+## Hinweis
+
+Dieses Projekt wurde ursprünglich mit GitHub Spark erstellt und danach eigenständig weiterentwickelt.
